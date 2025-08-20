@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Топ лидеров - Squad Busters Life</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #1a1825;
+            color: #f0f0f0;
+            background-image: url('https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/refs/heads/main/Assets/Images/Background_Pattern_Game.png');
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(to bottom, #2d2b3d, #232231);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid #444;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo img {
+            height: 50px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(162, 89, 255, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #a259ff;
+            text-shadow: 0 0 10px rgba(162, 89, 255, 0.4);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 15px;
+        }
+
+        nav a {
+            color: #f0f0f0;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            background-color: rgba(162, 89, 255, 0.1);
+        }
+
+        nav a:hover {
+            background-color: rgba(162, 89, 255, 0.3);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            height: 250px;
+            background: linear-gradient(to bottom, rgba(45, 43, 61, 0.8), rgba(35, 34, 49, 0.8)), 
+                        url('https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/refs/heads/main/Assets/Images/Banner_Background.png');
+            background-size: cover;
+            background-position: center;
+            margin: 0 -20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .hero-content {
+            text-align: center;
+            padding: 20px;
+            max-width: 800px;
+        }
+
+        .hero-content h2 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: #a259ff;
+            text-shadow: 0 0 15px rgba(162, 89, 255, 0.5);
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Leaderboard Styles */
+        .leaderboard {
+            margin: 40px 0;
+        }
+
+        .leaderboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .leaderboard-header h2 {
+            color: #a259ff;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: rgba(162, 89, 255, 0.1);
+            border-radius: 20px;
+            padding: 8px 15px;
+            border: 1px solid #444;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            padding: 5px 10px;
+            outline: none;
+            width: 200px;
+        }
+
+        .search-box i {
+            color: #a259ff;
+        }
+
+        .leaderboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .leaderboard-item {
+            background: linear-gradient(to right, #2d2b3d, #232231);
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            border: 1px solid #444;
+            cursor: pointer;
+        }
+
+        .leaderboard-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(162, 89, 255, 0.2);
+            border-color: #a259ff;
+        }
+
+        .player-rank {
+            font-size: 24px;
+            font-weight: bold;
+            color: #a259ff;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .rank-1, .rank-2, .rank-3 {
+            position: relative;
+        }
+
+        .rank-1 .player-rank {
+            color: gold;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .rank-2 .player-rank {
+            color: silver;
+            text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
+        }
+
+        .rank-3 .player-rank {
+            color: #cd7f32; /* Bronze */
+            text-shadow: 0 0 10px rgba(205, 127, 50, 0.5);
+        }
+
+        .player-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #a259ff;
+        }
+
+        .player-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .player-info {
+            flex-grow: 1;
+        }
+
+        .player-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .player-details {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .player-trophies {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: gold;
+        }
+
+        .player-country {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .country-flag {
+            width: 20px;
+            height: 15px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .country-flag img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .loading, .error {
+            text-align: center;
+            padding: 40px;
+            font-size: 20px;
+            color: #a259ff;
+        }
+
+        .error {
+            color: #ff5252;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(to bottom, #2d2b3d, #232231);
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid #444;
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-logo img {
+            height: 60px;
+            border-radius: 15px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-links a {
+            color: #f0f0f0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .footer-links a:hover {
+            color: #a259ff;
+        }
+
+        .copyright {
+            margin-top: 20px;
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+            
+            .hero-banner {
+                height: 200px;
+            }
+            
+            .hero-content h2 {
+                font-size: 28px;
+            }
+            
+            .hero-content p {
+                font-size: 16px;
+            }
+            
+            .leaderboard-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .leaderboard-item {
+                padding: 15px;
+                gap: 15px;
+            }
+            
+            .player-avatar {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .player-name {
+                font-size: 16px;
+            }
+            
+            .player-details {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <a href="https://squadbusterslife.github.io/">
+                    <img src="https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/refs/heads/main/Assets/Images/IMG_9592.PNG" alt="Squad Busters Life Logo">
+                </a>
+                <h1>Squad Busters Life</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="https://squadbusterslife.github.io/"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="https://squadbusterslife.github.io/Leaderboard.html" class="active"><i class="fas fa-trophy"></i> Топ лидеров</a></li>
+                    <li><a href="https://squadbusterslife.github.io/Assemblies.html"><i class="fas fa-puzzle-piece"></i> Лучшие сборки</a></li>
+                    <li><a href="https://squadbusterslife.github.io/Account.html"><i class="fas fa-user"></i> Аккаунт</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero-banner">
+        <div class="container hero-content">
+            <h2><i class="fas fa-trophy"></i> Топ лидеров</h2>
+            <p>Самые лучшие игроки Squad Busters со всего мира</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="leaderboard">
+            <div class="leaderboard-header">
+                <h2><i class="fas fa-ranking-star"></i> Рейтинг игроков</h2>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Поиск игрока...">
+                </div>
+            </div>
+
+            <div class="leaderboard-list" id="leaderboardList">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i> Загрузка данных...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">
+                <img src="https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/refs/heads/main/Assets/Images/IMG_9592.PNG" alt="Squad Busters Life Logo">
+            </div>
+            <div class="footer-links">
+                <a href="https://squadbusterslife.github.io/"><i class="fas fa-home"></i> Главная</a>
+                <a href="https://squadbusterslife.github.io/Leaderboard.html"><i class="fas fa-trophy"></i> Топ лидеров</a>
+                <a href="https://squadbusterslife.github.io/Assemblies.html"><i class="fas fa-puzzle-piece"></i> Лучшие сборки</a>
+                <a href="https://squadbusterslife.github.io/Account.html"><i class="fas fa-user"></i> Аккаунт</a>
+                <a href="#"><i class="fas fa-shield-alt"></i> Политика конфиденциальности</a>
+            </div>
+            <div class="copyright">
+                © 2023 Squad Busters Life. Все права защищены.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const leaderboardList = document.getElementById('leaderboardList');
+            const searchInput = document.getElementById('searchInput');
+            let playersData = [];
+
+            // Функция для загрузки данных топа лидеров
+            async function loadLeaderboard() {
+                try {
+                    leaderboardList.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Загрузка данных...</div>';
+                    
+                    const response = await fetch('https://boiling-brushlands-05108-5fd29f44600d.herokuapp.com/leaderboard');
+                    
+                    if (!response.ok) {
+                        throw new Error('Ошибка загрузки данных: ' + response.status);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // Преобразуем объект в массив
+                    playersData = Object.values(data);
+                    
+                    // Сортируем по трофеям (на случай если порядок нарушен)
+                    playersData.sort((a, b) => b.Trophies - a.Trophies);
+                    
+                    displayLeaderboard(playersData);
+                } catch (error) {
+                    console.error('Ошибка:', error);
+                    leaderboardList.innerHTML = '<div class="error"><i class="fas fa-exclamation-circle"></i> Не удалось загрузить данные. Попробуйте позже.</div>';
+                }
+            }
+
+            // Функция для отображения топа лидеров
+            function displayLeaderboard(players) {
+                if (players.length === 0) {
+                    leaderboardList.innerHTML = '<div class="error">Нет данных для отображения</div>';
+                    return;
+                }
+
+                leaderboardList.innerHTML = '';
+                
+                players.forEach((player, index) => {
+                    const rank = index + 1;
+                    const countryFlagUrl = `https://flagsapi.com/${player.Country}/flat/32.png`;
+                    const playerProfileUrl = `https://squadbusterslife.github.io/Account.html?id=${player.ID}`;
+                    
+                    const playerElement = document.createElement('div');
+                    playerElement.className = `leaderboard-item ${rank <= 3 ? 'rank-' + rank : ''}`;
+                    playerElement.onclick = () => {
+                        window.location.href = playerProfileUrl;
+                    };
+                    
+                    playerElement.innerHTML = `
+                        <div class="player-rank">${rank}</div>
+                        <div class="player-avatar">
+                            <img src="https://img.gazeta.ru/files3/236/15291236/rick-pic_square_200x200-200x200-77231.jpg" alt="${player.Name}">
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">
+                                ${player.Name}
+                            </div>
+                            <div class="player-details">
+                                <div class="player-trophies">
+                                    <i class="fas fa-trophy"></i> ${player.Trophies} трофеев
+                                </div>
+                                <div class="player-country">
+                                    <div class="country-flag">
+                                        <img src="${countryFlagUrl}" alt="${player.Country}">
+                                    </div>
+                                    ${player.Country}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    leaderboardList.appendChild(playerElement);
+                });
+            }
+
+            // Функция для поиска игроков
+            function searchPlayers() {
+                const searchTerm = searchInput.value.toLowerCase();
+                
+                if (searchTerm === '') {
+                    displayLeaderboard(playersData);
+                    return;
+                }
+                
+                const filteredPlayers = playersData.filter(player => 
+                    player.Name.toLowerCase().includes(searchTerm)
+                );
+                
+                displayLeaderboard(filteredPlayers);
+            }
+
+            // Обработчик события для поиска
+            searchInput.addEventListener('input', searchPlayers);
+
+            // Загружаем данные при загрузке страницы
+            loadLeaderboard();
+        });
+    </script>
+</body>
+</html>
