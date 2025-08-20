@@ -208,6 +208,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+            margin-bottom: 20px;
         }
 
         .leaderboard-item {
@@ -326,6 +327,37 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        .load-more-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .load-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #a259ff, #8a3ffb);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(162, 89, 255, 0.3);
+        }
+
+        .load-more-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(162, 89, 255, 0.4);
+        }
+
+        .load-more-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .loading, .error {
@@ -519,6 +551,11 @@
             .player-details {
                 font-size: 12px;
             }
+            
+            .load-more-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -569,6 +606,12 @@
                     <i class="fas fa-spinner fa-spin"></i> Загрузка данных...
                 </div>
             </div>
+
+            <div class="load-more-container" id="loadMoreContainer" style="display: none;">
+                <button class="load-more-btn" id="loadMoreBtn">
+                    <i class="fas fa-plus"></i> Загрузить ещё
+                </button>
+            </div>
         </div>
     </div>
 
@@ -596,7 +639,13 @@
             const searchInput = document.getElementById('searchInput');
             const menuToggle = document.getElementById('menuToggle');
             const mainNav = document.getElementById('mainNav');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            const loadMoreContainer = document.getElementById('loadMoreContainer');
+            
             let playersData = [];
+            let displayedPlayers = 0;
+            const playersPerPage = 25;
+            const defaultAvatar = 'https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/refs/heads/main/Assets/Portraits/Spike_evo2.webp';
 
             // Мобильное меню
             menuToggle.addEventListener('click', function(e) {
@@ -630,58 +679,88 @@
                     // Сортируем по трофеям (на случай если порядок нарушен)
                     playersData.sort((a, b) => b.Trophies - a.Trophies);
                     
-                    displayLeaderboard(playersData);
+                    // Очищаем сообщение о загрузке
+                    leaderboardList.innerHTML = '';
+                    
+                    displayedPlayers = 0;
+                    loadMorePlayers();
+                    
+                    // Показываем кнопку "Загрузить ещё", если есть еще игроки
+                    if (playersData.length > playersPerPage) {
+                        loadMoreContainer.style.display = 'block';
+                    }
                 } catch (error) {
                     console.error('Ошибка:', error);
                     leaderboardList.innerHTML = '<div class="error"><i class="fas fa-exclamation-circle"></i> Не удалось загрузить данные. Попробуйте позже.</div>';
                 }
             }
 
-            // Функция для отображения топа лидеров
-            function displayLeaderboard(players) {
-                if (players.length === 0) {
-                    leaderboardList.innerHTML = '<div class="error">Нет данных для отображения</div>';
+            // Функция для загрузки дополнительных игроков
+            function loadMorePlayers() {
+                const nextPlayers = playersData.slice(displayedPlayers, displayedPlayers + playersPerPage);
+                
+                if (nextPlayers.length === 0) {
+                    loadMoreContainer.style.display = 'none';
                     return;
                 }
-
-                leaderboardList.innerHTML = '';
                 
-                players.forEach((player, index) => {
-                    const rank = index + 1;
-                    const countryFlagUrl = `https://flagsapi.com/${player.Country}/flat/32.png`;
-                    const playerProfileUrl = `https://squadbusterslife.github.io/Account.html?id=${player.ID}`;
-                    
-                    const playerElement = document.createElement('div');
-                    playerElement.className = `leaderboard-item ${rank <= 3 ? 'rank-' + rank : ''}`;
-                    playerElement.onclick = () => {
-                        window.location.href = playerProfileUrl;
-                    };
-                    
-                    playerElement.innerHTML = `
-                        <div class="player-rank">${rank}</div>
-                        <div class="player-avatar">
-                            <img src="https://img.gazeta.ru/files3/236/15291236/rick-pic_square_200x200-200x200-77231.jpg" alt="${player.Name}">
-                        </div>
-                        <div class="player-info">
-                            <div class="player-name">
-                                ${player.Name}
-                            </div>
-                            <div class="player-details">
-                                <div class="player-trophies">
-                                    <i class="fas fa-trophy"></i> ${player.Trophies}
-                                </div>
-                                <div class="player-country">
-                                    <div class="country-flag">
-                                        <img src="${countryFlagUrl}" alt="${player.Country}">
-                                    </div>
-                                    ${player.Country}
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    leaderboardList.appendChild(playerElement);
+                // Отключаем кнопку на время загрузки
+                loadMoreBtn.disabled = true;
+                loadMoreBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Загрузка...';
+                
+                // Добавляем игроков синхронно
+                nextPlayers.forEach((player, index) => {
+                    addPlayerToLeaderboard(player, displayedPlayers + index + 1);
                 });
+                
+                displayedPlayers += nextPlayers.length;
+                
+                // Включаем кнопку обратно
+                loadMoreBtn.disabled = false;
+                loadMoreBtn.innerHTML = '<i class="fas fa-plus"></i> Загрузить ещё';
+                
+                // Скрываем кнопку, если больше нет игроков
+                if (displayedPlayers >= playersData.length) {
+                    loadMoreContainer.style.display = 'none';
+                }
+            }
+
+            // Функция для добавления игрока в таблицу лидеров
+            function addPlayerToLeaderboard(player, rank) {
+                const countryFlagUrl = `https://flagsapi.com/${player.Country}/flat/32.png`;
+                const playerProfileUrl = `https://squadbusterslife.github.io/Account.html?id=${player.ID}`;
+                
+                const playerElement = document.createElement('div');
+                playerElement.className = `leaderboard-item ${rank <= 3 ? 'rank-' + rank : ''}`;
+                playerElement.onclick = () => {
+                    window.location.href = playerProfileUrl;
+                };
+                
+                // Добавляем элемент с фиксированной аватаркой
+                playerElement.innerHTML = `
+                    <div class="player-rank">${rank}</div>
+                    <div class="player-avatar">
+                        <img src="${defaultAvatar}" alt="${player.Name}">
+                    </div>
+                    <div class="player-info">
+                        <div class="player-name">
+                            ${player.Name}
+                        </div>
+                        <div class="player-details">
+                            <div class="player-trophies">
+                                <i class="fas fa-trophy"></i> ${player.Trophies}
+                            </div>
+                            <div class="player-country">
+                                <div class="country-flag">
+                                    <img src="${countryFlagUrl}" alt="${player.Country}">
+                                </div>
+                                ${player.Country}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                leaderboardList.appendChild(playerElement);
             }
 
             // Функция для поиска игроков
@@ -689,7 +768,10 @@
                 const searchTerm = searchInput.value.toLowerCase();
                 
                 if (searchTerm === '') {
-                    displayLeaderboard(playersData);
+                    // Если поисковой запрос пуст, показываем всех игроков
+                    displayedPlayers = 0;
+                    leaderboardList.innerHTML = '';
+                    loadMorePlayers();
                     return;
                 }
                 
@@ -697,11 +779,26 @@
                     player.Name.toLowerCase().includes(searchTerm)
                 );
                 
-                displayLeaderboard(filteredPlayers);
+                // Показываем только отфильтрованных игроков
+                displayedPlayers = 0;
+                leaderboardList.innerHTML = '';
+                
+                if (filteredPlayers.length === 0) {
+                    leaderboardList.innerHTML = '<div class="error">Игроки не найдены</div>';
+                    loadMoreContainer.style.display = 'none';
+                } else {
+                    filteredPlayers.forEach((player, index) => {
+                        addPlayerToLeaderboard(player, index + 1);
+                    });
+                    loadMoreContainer.style.display = 'none';
+                }
             }
 
             // Обработчик события для поиска
             searchInput.addEventListener('input', searchPlayers);
+
+            // Обработчик для кнопки "Загрузить ещё"
+            loadMoreBtn.addEventListener('click', loadMorePlayers);
 
             // Загружаем данные при загрузке страницы
             loadLeaderboard();
