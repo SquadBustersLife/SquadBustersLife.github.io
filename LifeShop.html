@@ -116,29 +116,6 @@
             transition: opacity 0.5s ease;
         }
 
-        /* Navigation */
-        .nav-tabs {
-            display: flex;
-            background-color: var(--bg-secondary);
-            border-radius: var(--element-radius);
-            padding: 4px;
-            margin-bottom: 20px;
-        }
-
-        .nav-tab {
-            flex: 1;
-            text-align: center;
-            padding: 10px;
-            border-radius: var(--element-radius);
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .nav-tab.active {
-            background-color: var(--accent-color);
-        }
-
         /* Section Styles */
         .section {
             margin-bottom: 28px;
@@ -348,6 +325,7 @@
             color: var(--text-muted);
             font-size: 12px;
             transition: var(--transition);
+            text-decoration: none;
         }
 
         .nav-item.active {
@@ -416,17 +394,10 @@
             <img id="banner-img" src="" alt="Баннер">
         </div>
 
-        <div class="nav-tabs">
-            <div class="nav-tab active">Главная</div>
-            <div class="nav-tab">Игры</div>
-            <div class="nav-tab">Товары</div>
-            <div class="nav-tab">Профиль</div>
-        </div>
-
         <div class="section">
             <div class="section-header">
                 <h2 class="section-title">Игры</h2>
-                <a href="#" class="section-link">Все игры <i class="fas fa-chevron-right"></i></a>
+                <a href="https://squadbusterslife.github.io/LifeShop/Games.html" class="section-link">Все игры <i class="fas fa-chevron-right"></i></a>
             </div>
             <div class="games-scroll" id="games-container">
                 <!-- Games will be loaded here -->
@@ -436,7 +407,6 @@
         <div class="section">
             <div class="section-header">
                 <h2 class="section-title">Популярные товары</h2>
-                <a href="#" class="section-link">Все товары <i class="fas fa-chevron-right"></i></a>
             </div>
             <div class="products-scroll" id="products-container">
                 <!-- Products will be loaded here -->
@@ -460,22 +430,18 @@
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-item active">
+        <a href="https://squadbusterslife.github.io/LifeShop.html" class="nav-item active">
             <div class="nav-icon"><i class="fas fa-home"></i></div>
             <span>Главная</span>
-        </div>
-        <div class="nav-item">
+        </a>
+        <a href="https://squadbusterslife.github.io/LifeShop/Games.html" class="nav-item">
             <div class="nav-icon"><i class="fas fa-gamepad"></i></div>
             <span>Игры</span>
-        </div>
-        <div class="nav-item">
-            <div class="nav-icon"><i class="fas fa-gift"></i></div>
-            <span>Товары</span>
-        </div>
-        <div class="nav-item">
+        </a>
+        <a href="https://squadbusterslife.github.io/LifeShop/Account.html" class="nav-item">
             <div class="nav-icon"><i class="fas fa-user"></i></div>
             <span>Профиль</span>
-        </div>
+        </a>
     </div>
 
     <script>
