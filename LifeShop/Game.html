@@ -16,8 +16,8 @@
             --text-primary: #ffffff;
             --text-secondary: #cccccc;
             --text-muted: #888888;
-            --card-radius: 16px;
-            --element-radius: 12px;
+            --card-radius: 12px;
+            --element-radius: 10px;
             --transition: all 0.3s ease;
         }
 
@@ -31,16 +31,17 @@
         body {
             background-color: var(--bg-primary);
             color: var(--text-primary);
-            padding: 16px;
+            padding: 12px;
             max-width: 100%;
             overflow-x: hidden;
             line-height: 1.5;
+            font-size: 14px;
         }
 
         .container {
             max-width: 100%;
             margin: 0 auto;
-            padding-bottom: 70px;
+            padding-bottom: 60px;
         }
 
         /* Header Styles */
@@ -48,30 +49,29 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             position: sticky;
             top: 0;
             background-color: var(--bg-primary);
             z-index: 100;
-            padding: 15px 0;
+            padding: 8px 0;
         }
 
         .logo {
-            height: 36px;
+            height: 32px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .logo img {
             height: 100%;
-            border-radius: 10px;
+            border-radius: 8px;
         }
 
         .logo-text {
             font-weight: 700;
-            font-size: 18px;
+            font-size: 16px;
             background: linear-gradient(90deg, #bb86fc, #8a2be2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -81,11 +81,12 @@
             background: none;
             border: none;
             color: var(--text-primary);
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
-            padding: 8px;
+            padding: 6px;
             border-radius: 50%;
             transition: var(--transition);
+            margin-right: 8px;
         }
 
         .back-btn:hover {
@@ -97,10 +98,10 @@
             width: 100%;
             border-radius: var(--card-radius);
             overflow: hidden;
-            margin-bottom: 24px;
-            height: 160px;
+            margin-bottom: 16px;
+            height: 120px;
             position: relative;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .banner img {
@@ -111,13 +112,13 @@
 
         /* Search and Filters */
         .search-section {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .search-container {
             display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
+            gap: 10px;
+            margin-bottom: 12px;
         }
 
         .search-input {
@@ -125,9 +126,9 @@
             background-color: var(--bg-secondary);
             border: none;
             border-radius: var(--element-radius);
-            padding: 12px 16px;
+            padding: 10px 14px;
             color: var(--text-primary);
-            font-size: 16px;
+            font-size: 14px;
         }
 
         .search-input:focus {
@@ -139,12 +140,13 @@
             border: none;
             border-radius: var(--element-radius);
             color: var(--text-primary);
-            padding: 12px 16px;
+            padding: 10px 14px;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            font-size: 14px;
         }
 
         .filter-btn:hover {
@@ -154,10 +156,10 @@
         .filter-panel {
             background-color: var(--bg-card);
             border-radius: var(--card-radius);
-            padding: 16px;
-            margin-top: 16px;
+            padding: 14px;
+            margin-top: 12px;
             display: none;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
         .filter-panel.active {
@@ -165,19 +167,19 @@
         }
 
         .filter-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .price-filter {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .price-inputs {
             display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
+            gap: 10px;
+            margin-bottom: 12px;
         }
 
         .price-input {
@@ -185,54 +187,29 @@
             background-color: var(--bg-secondary);
             border: none;
             border-radius: var(--element-radius);
-            padding: 10px 12px;
+            padding: 8px 10px;
             color: var(--text-primary);
+            font-size: 14px;
         }
 
         .price-input:focus {
             outline: 2px solid var(--accent-color);
         }
 
-        .slider-container {
-            position: relative;
-            height: 5px;
-            background-color: var(--bg-secondary);
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-
-        .slider-track {
-            height: 5px;
-            background-color: var(--accent-color);
-            border-radius: 5px;
-            position: absolute;
-        }
-
-        .slider-thumb {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: var(--accent-color);
-            border-radius: 50%;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
         .filter-actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
         }
 
         .apply-btn, .reset-btn {
             flex: 1;
-            padding: 10px;
+            padding: 8px;
             border: none;
             border-radius: var(--element-radius);
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
+            font-size: 14px;
         }
 
         .apply-btn {
@@ -255,15 +232,15 @@
 
         /* Products Section */
         .section-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .products-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
+            gap: 12px;
         }
 
         .product-card {
@@ -271,7 +248,7 @@
             border-radius: var(--card-radius);
             overflow: hidden;
             transition: var(--transition);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
             cursor: pointer;
         }
 
@@ -281,7 +258,7 @@
 
         .product-banner {
             width: 100%;
-            height: 150px;
+            height: 120px;
             position: relative;
             overflow: hidden;
         }
@@ -302,13 +279,13 @@
         }
 
         .product-info {
-            padding: 12px;
+            padding: 10px;
         }
 
         .product-name {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -317,14 +294,20 @@
         .product-price {
             color: var(--accent-color);
             font-weight: bold;
-            font-size: 16px;
+            font-size: 14px;
         }
 
         .no-results {
             text-align: center;
-            padding: 40px 0;
+            padding: 30px 0;
             color: var(--text-muted);
             grid-column: 1 / -1;
+            font-size: 14px;
+        }
+
+        .no-results i {
+            font-size: 32px;
+            margin-bottom: 10px;
         }
 
         /* Bottom Navigation */
@@ -336,7 +319,7 @@
             background-color: var(--bg-secondary);
             display: flex;
             justify-content: space-around;
-            padding: 12px;
+            padding: 10px;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             z-index: 100;
         }
@@ -346,7 +329,7 @@
             flex-direction: column;
             align-items: center;
             color: var(--text-muted);
-            font-size: 12px;
+            font-size: 11px;
             transition: var(--transition);
             text-decoration: none;
         }
@@ -356,32 +339,31 @@
         }
 
         .nav-icon {
-            font-size: 20px;
-            margin-bottom: 4px;
+            font-size: 18px;
+            margin-bottom: 2px;
         }
 
         /* Animations */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .fade-in {
             opacity: 0;
-            animation: fadeIn 0.5s ease forwards;
+            animation: fadeIn 0.4s ease forwards;
         }
 
         .delay-1 { animation-delay: 0.1s; }
         .delay-2 { animation-delay: 0.2s; }
         .delay-3 { animation-delay: 0.3s; }
-        .delay-4 { animation-delay: 0.4s; }
 
         /* Loading States */
         .skeleton {
             background: linear-gradient(90deg, #1a1a1a 25%, #222 50%, #1a1a1a 75%);
             background-size: 200% 100%;
             animation: loading 1.5s infinite;
-            border-radius: 8px;
+            border-radius: 6px;
         }
 
         @keyframes loading {
@@ -390,13 +372,17 @@
         }
 
         /* Responsive adjustments */
-        @media (max-width: 480px) {
+        @media (max-width: 380px) {
             .products-grid {
                 grid-template-columns: 1fr;
             }
             
             .banner {
-                height: 120px;
+                height: 100px;
+            }
+            
+            .product-banner {
+                height: 100px;
             }
         }
     </style>
@@ -411,20 +397,17 @@
                 <img id="logo-img" src="https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/refs/heads/main/LifeShop/Life.png" alt="Life Shop">
                 <div class="logo-text">Life Shop</div>
             </div>
-            <div class="user-avatar" id="user-avatar">
-                <img id="avatar-img" src="" alt="Аватар">
-            </div>
         </header>
 
         <div class="banner">
-            <img id="game-banner" src="" alt="Баннер игры">
+            <img id="game-banner" src="" alt="Баннер игры" class="skeleton">
         </div>
 
         <div class="search-section">
             <div class="search-container">
                 <input type="text" class="search-input" id="search-input" placeholder="Поиск товаров...">
                 <button class="filter-btn" id="filter-btn">
-                    <i class="fas fa-filter"></i> Фильтры
+                    <i class="fas fa-filter"></i>
                 </button>
             </div>
 
@@ -435,12 +418,6 @@
                     <div class="price-inputs">
                         <input type="number" class="price-input" id="min-price" placeholder="От" min="0">
                         <input type="number" class="price-input" id="max-price" placeholder="До" min="0">
-                    </div>
-                    
-                    <div class="slider-container" id="slider-container">
-                        <div class="slider-track" id="slider-track"></div>
-                        <div class="slider-thumb" id="min-thumb"></div>
-                        <div class="slider-thumb" id="max-thumb"></div>
                     </div>
                 </div>
 
@@ -453,7 +430,10 @@
 
         <h2 class="section-title">Товары</h2>
         <div class="products-grid" id="products-container">
-            <!-- Products will be loaded here -->
+            <div class="no-results">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Загрузка товаров...</p>
+            </div>
         </div>
     </div>
 
@@ -486,22 +466,9 @@
         const urlParams = new URLSearchParams(window.location.search);
         const gameName = urlParams.get('game');
         
-        // Set user avatar from Telegram
-        const user = tg.initDataUnsafe.user;
-        if (user && user.photo_url) {
-            document.getElementById('avatar-img').src = user.photo_url;
-        } else {
-            document.getElementById('avatar-img').src = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
-        }
-        
         // Back button handler
         document.getElementById('back-btn').addEventListener('click', function() {
             window.history.back();
-        });
-        
-        // Account button handler
-        document.getElementById('user-avatar').addEventListener('click', function() {
-            window.location.href = 'https://squadbusterslife.github.io/LifeShop/Account.html';
         });
         
         // Toggle filter panel
@@ -524,7 +491,11 @@
                 }
                 
                 // Load game banner
-                document.getElementById('game-banner').src = `https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/refs/heads/main/LifeShop/${gameName}Banner.png`;
+                const bannerImg = document.getElementById('game-banner');
+                bannerImg.src = `https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/refs/heads/main/LifeShop/${gameName}Banner.png`;
+                bannerImg.onload = function() {
+                    bannerImg.classList.remove('skeleton');
+                };
                 
                 // Load game offers
                 const response = await fetch(`https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/refs/heads/main/LifeShop/${gameName}Offers`);
@@ -535,13 +506,13 @@
                 
             } catch (error) {
                 console.error('Error loading game data:', error);
+                document.getElementById('game-banner').classList.remove('skeleton');
             }
         }
         
         // Load offers
         async function loadOffers(offerIds) {
             const productsContainer = document.getElementById('products-container');
-            productsContainer.innerHTML = '';
             
             allProducts = [];
             
@@ -556,28 +527,6 @@
                     
                     allProducts.push(productData);
                     
-                    const productCard = document.createElement('div');
-                    productCard.className = `product-card fade-in delay-${i % 4}`;
-                    productCard.onclick = () => {
-                        window.location.href = `https://squadbusterslife.github.io/LifeShop/Offer.html?id=${id}`;
-                    };
-                    
-                    productCard.innerHTML = `
-                        <div class="product-banner" id="banner-${id}">
-                            <img src="https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/refs/heads/main/LifeShop/Offer${id}Banner1.png" class="active" alt="Баннер 1">
-                            <img src="https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/refs/heads/main/LifeShop/Offer${id}Banner2.png" alt="Баннер 2">
-                        </div>
-                        <div class="product-info">
-                            <div class="product-name">${productData.Name}</div>
-                            <div class="product-price">${productData.Price} ₽</div>
-                        </div>
-                    `;
-                    
-                    productsContainer.appendChild(productCard);
-                    
-                    // Start banner rotation for this product
-                    startBannerRotation(id);
-                    
                 } catch (error) {
                     console.error(`Error loading product ${id}:`, error);
                 }
@@ -585,6 +534,10 @@
             
             // Initialize price range
             initPriceRange();
+            
+            // Render all products initially
+            filteredProducts = [...allProducts];
+            renderFilteredProducts();
         }
         
         // Banner rotation function
@@ -604,8 +557,10 @@
             }, 5000); // Change banner every 5 seconds
         }
         
-        // Initialize price range slider
+        // Initialize price range
         function initPriceRange() {
+            if (allProducts.length === 0) return;
+            
             // Find min and max prices
             const prices = allProducts.map(p => p.Price);
             minPrice = Math.min(...prices);
@@ -614,111 +569,8 @@
             // Set input values
             document.getElementById('min-price').value = minPrice;
             document.getElementById('max-price').value = maxPrice;
-            
-            // Initialize slider
-            initSlider();
-        }
-        
-        // Initialize slider
-        function initSlider() {
-            const sliderContainer = document.getElementById('slider-container');
-            const sliderTrack = document.getElementById('slider-track');
-            const minThumb = document.getElementById('min-thumb');
-            const maxThumb = document.getElementById('max-thumb');
-            const minInput = document.getElementById('min-price');
-            const maxInput = document.getElementById('max-price');
-            
-            const sliderWidth = sliderContainer.offsetWidth;
-            const thumbWidth = 20;
-            
-            // Set initial positions
-            let minPos = 0;
-            let maxPos = sliderWidth - thumbWidth;
-            
-            // Update slider track
-            function updateTrack() {
-                sliderTrack.style.left = minPos + 'px';
-                sliderTrack.style.width = (maxPos - minPos) + 'px';
-                
-                // Update input values
-                const minValue = Math.round(minPrice + (minPos / sliderWidth) * (maxPrice - minPrice));
-                const maxValue = Math.round(minPrice + (maxPos / sliderWidth) * (maxPrice - minPrice));
-                
-                minInput.value = minValue;
-                maxInput.value = maxValue;
-            }
-            
-            // Set initial positions
-            updateTrack();
-            
-            // Make thumbs draggable
-            function makeDraggable(thumb, isMin) {
-                thumb.addEventListener('mousedown', startDrag);
-                thumb.addEventListener('touchstart', startDrag);
-                
-                function startDrag(e) {
-                    e.preventDefault();
-                    const startX = e.clientX || e.touches[0].clientX;
-                    const startPos = parseInt(thumb.style.left) || (isMin ? minPos : maxPos);
-                    
-                    function drag(e) {
-                        const currentX = e.clientX || e.touches[0].clientX;
-                        const deltaX = currentX - startX;
-                        let newPos = startPos + deltaX;
-                        
-                        // Constrain position
-                        newPos = Math.max(0, Math.min(sliderWidth - thumbWidth, newPos));
-                        
-                        if (isMin) {
-                            if (newPos <= maxPos - thumbWidth) {
-                                minPos = newPos;
-                                thumb.style.left = minPos + 'px';
-                            }
-                        } else {
-                            if (newPos >= minPos + thumbWidth) {
-                                maxPos = newPos;
-                                thumb.style.left = maxPos + 'px';
-                            }
-                        }
-                        
-                        updateTrack();
-                    }
-                    
-                    function stopDrag() {
-                        document.removeEventListener('mousemove', drag);
-                        document.removeEventListener('touchmove', drag);
-                        document.removeEventListener('mouseup', stopDrag);
-                        document.removeEventListener('touchend', stopDrag);
-                    }
-                    
-                    document.addEventListener('mousemove', drag);
-                    document.addEventListener('touchmove', drag);
-                    document.addEventListener('mouseup', stopDrag);
-                    document.addEventListener('touchend', stopDrag);
-                }
-            }
-            
-            makeDraggable(minThumb, true);
-            makeDraggable(maxThumb, false);
-            
-            // Update from input fields
-            minInput.addEventListener('change', () => {
-                const value = parseInt(minInput.value);
-                if (!isNaN(value) && value >= minPrice && value <= maxPrice) {
-                    minPos = ((value - minPrice) / (maxPrice - minPrice)) * (sliderWidth - thumbWidth);
-                    minThumb.style.left = minPos + 'px';
-                    updateTrack();
-                }
-            });
-            
-            maxInput.addEventListener('change', () => {
-                const value = parseInt(maxInput.value);
-                if (!isNaN(value) && value >= minPrice && value <= maxPrice) {
-                    maxPos = ((value - minPrice) / (maxPrice - minPrice)) * (sliderWidth - thumbWidth);
-                    maxThumb.style.left = maxPos + 'px';
-                    updateTrack();
-                }
-            });
+            document.getElementById('min-price').placeholder = `От ${minPrice}`;
+            document.getElementById('max-price').placeholder = `До ${maxPrice}`;
         }
         
         // Filter products
@@ -749,7 +601,7 @@
             if (filteredProducts.length === 0) {
                 productsContainer.innerHTML = `
                     <div class="no-results">
-                        <i class="fas fa-search" style="font-size: 40px; margin-bottom: 16px;"></i>
+                        <i class="fas fa-search"></i>
                         <p>Товары не найдены</p>
                         <p>Попробуйте изменить параметры поиска или фильтры</p>
                     </div>
@@ -759,7 +611,7 @@
             
             filteredProducts.forEach((product, i) => {
                 const productCard = document.createElement('div');
-                productCard.className = `product-card fade-in delay-${i % 4}`;
+                productCard.className = `product-card fade-in delay-${i % 3}`;
                 productCard.onclick = () => {
                     window.location.href = `https://squadbusterslife.github.io/LifeShop/Offer.html?id=${product.id}`;
                 };
@@ -794,10 +646,27 @@
             document.getElementById('min-price').value = minPrice;
             document.getElementById('max-price').value = maxPrice;
             filterProducts();
+            document.getElementById('filter-panel').classList.remove('active');
         });
         
         // Search input event
         document.getElementById('search-input').addEventListener('input', filterProducts);
+        
+        // Price input events
+        document.getElementById('min-price').addEventListener('input', filterProducts);
+        document.getElementById('max-price').addEventListener('input', filterProducts);
+        
+        // Close filter panel when clicking outside
+        document.addEventListener('click', function(event) {
+            const filterPanel = document.getElementById('filter-panel');
+            const filterBtn = document.getElementById('filter-btn');
+            
+            if (filterPanel.classList.contains('active') && 
+                !filterPanel.contains(event.target) && 
+                !filterBtn.contains(event.target)) {
+                filterPanel.classList.remove('active');
+            }
+        });
         
         // Initialize the app
         document.addEventListener('DOMContentLoaded', loadGameData);
