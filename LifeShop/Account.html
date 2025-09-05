@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аккаунт - Life Shop</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #121212;
+            --bg-card: #1a1a1a;
+            --accent-color: #8a2be2;
+            --accent-hover: #9933ff;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --text-muted: #888888;
+            --card-radius: 12px;
+            --element-radius: 10px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            padding: 12px;
+            max-width: 100%;
+            overflow-x: hidden;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding-bottom: 60px;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            position: sticky;
+            top: 0;
+            background-color: var(--bg-primary);
+            z-index: 100;
+            padding: 8px 0;
+        }
+
+        .logo {
+            height: 32px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo img {
+            height: 100%;
+            border-radius: 8px;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 16px;
+            background: linear-gradient(90deg, #bb86fc, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Profile Section */
+        .profile-section {
+            background-color: var(--bg-card);
+            border-radius: var(--card-radius);
+            padding: 20px;
+            margin-bottom: 16px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 12px;
+            border: 3px solid var(--accent-color);
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .user-balance {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 4px;
+        }
+
+        .balance-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Account Actions */
+        .account-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--bg-card);
+            border: none;
+            border-radius: var(--element-radius);
+            padding: 14px 16px;
+            color: var(--text-primary);
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .action-btn:hover {
+            background-color: #222;
+        }
+
+        .action-btn i:first-child {
+            margin-right: 10px;
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .action-btn i:last-child {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Promocode Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .promo-modal {
+            background-color: var(--bg-card);
+            border-radius: var(--card-radius);
+            padding: 20px;
+            width: 85%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active .promo-modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .promo-input {
+            width: 100%;
+            background-color: var(--bg-secondary);
+            border: none;
+            border-radius: var(--element-radius);
+            padding: 12px 14px;
+            color: var(--text-primary);
+            font-size: 15px;
+            margin-bottom: 16px;
+        }
+
+        .promo-input:focus {
+            outline: 2px solid var(--accent-color);
+        }
+
+        .apply-promo {
+            width: 100%;
+            background-color: var(--accent-color);
+            border: none;
+            border-radius: var(--element-radius);
+            padding: 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .apply-promo:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--bg-secondary);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 11px;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .nav-item.active {
+            color: var(--accent-color);
+        }
+
+        .nav-icon {
+            font-size: 18px;
+            margin-bottom: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <img id="logo-img" src="https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/refs/heads/main/LifeShop/Life.png" alt="Life Shop">
+                <div class="logo-text">Life Shop</div>
+            </div>
+        </header>
+
+        <div class="profile-section">
+            <div class="user-avatar">
+                <img id="avatar-img" src="" alt="Аватар">
+            </div>
+            <div class="user-name" id="user-name">Пользователь</div>
+            <div class="user-balance" id="user-balance">0 ₽</div>
+            <div class="balance-label">Баланс</div>
+        </div>
+
+        <div class="account-actions">
+            <button class="action-btn" id="promo-btn">
+                <div>
+                    <i class="fas fa-ticket-alt"></i>
+                    Ввести промокод
+                </div>
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            
+            <a href="https://squadbusterslife.github.io/LifeShop/History.html" class="action-btn">
+                <div>
+                    <i class="fas fa-history"></i>
+                    История покупок
+                </div>
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            
+            <a href="https://t.me/Bahrik228" class="action-btn">
+                <div>
+                    <i class="fas fa-headset"></i>
+                    Поддержка
+                </div>
+                <i class="fas fa-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Promocode Modal -->
+    <div class="modal-overlay" id="promo-modal">
+        <div class="promo-modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Ввод промокода</h3>
+                <button class="close-modal" id="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <input type="text" class="promo-input" id="promo-input" placeholder="Введите промокод">
+            <button class="apply-promo" id="apply-promo">Применить</button>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="https://squadbusterslife.github.io/LifeShop.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-home"></i></div>
+            <span>Главная</span>
+        </a>
+        <a href="https://squadbusterslife.github.io/LifeShop/Games.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-gamepad"></i></div>
+            <span>Игры</span>
+        </a>
+        <a href="https://squadbusterslife.github.io/LifeShop/Account.html" class="nav-item active">
+            <div class="nav-icon"><i class="fas fa-user"></i></div>
+            <span>Профиль</span>
+        </a>
+    </div>
+
+    <script>
+        // Initialize Telegram Web App
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.enableClosingConfirmation();
+        
+        // Set theme parameters
+        tg.setHeaderColor('#0a0a0a');
+        tg.setBackgroundColor('#0a0a0a');
+        
+        // Get user data from Telegram
+        const user = tg.initDataUnsafe.user;
+        
+        // Set user avatar and name
+        if (user) {
+            if (user.photo_url) {
+                document.getElementById('avatar-img').src = user.photo_url;
+            } else {
+                document.getElementById('avatar-img').src = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
+            }
+            
+            if (user.first_name || user.last_name) {
+                const userName = `${user.first_name || ''} ${user.last_name || ''}`.trim();
+                document.getElementById('user-name').textContent = userName;
+            } else if (user.username) {
+                document.getElementById('user-name').textContent = user.username;
+            }
+        }
+        
+        // Get balance from localStorage or set default
+        let userBalance = localStorage.getItem('userBalance');
+        if (userBalance === null) {
+            userBalance = 0;
+            localStorage.setItem('userBalance', userBalance);
+        }
+        document.getElementById('user-balance').textContent = `${userBalance} ₽`;
+        
+        // Promocode modal functionality
+        const promoModal = document.getElementById('promo-modal');
+        const promoBtn = document.getElementById('promo-btn');
+        const closeModal = document.getElementById('close-modal');
+        const applyPromo = document.getElementById('apply-promo');
+        const promoInput = document.getElementById('promo-input');
+        
+        // Open modal
+        promoBtn.addEventListener('click', function() {
+            promoModal.classList.add('active');
+            promoInput.focus();
+        });
+        
+        // Close modal
+        closeModal.addEventListener('click', function() {
+            promoModal.classList.remove('active');
+        });
+        
+        // Close modal when clicking outside
+        promoModal.addEventListener('click', function(e) {
+            if (e.target === promoModal) {
+                promoModal.classList.remove('active');
+            }
+        });
+        
+        // Apply promocode
+        applyPromo.addEventListener('click', function() {
+            const code = promoInput.value.trim();
+            
+            if (!code) {
+                alert('Введите промокод');
+                return;
+            }
+            
+            // All promocodes are invalid for now
+            alert('Промокод недействителен');
+            promoInput.value = '';
+        });
+        
+        // Apply on Enter key
+        promoInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                applyPromo.click();
+            }
+        });
+    </script>
+</body>
+</html>
