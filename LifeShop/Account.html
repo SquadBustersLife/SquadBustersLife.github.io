@@ -16,8 +16,8 @@
             --text-primary: #ffffff;
             --text-secondary: #cccccc;
             --text-muted: #888888;
-            --card-radius: 12px;
-            --element-radius: 10px;
+            --card-radius: 16px;
+            --element-radius: 12px;
             --transition: all 0.3s ease;
         }
 
@@ -31,7 +31,7 @@
         body {
             background-color: var(--bg-primary);
             color: var(--text-primary);
-            padding: 12px;
+            padding: 16px;
             max-width: 100%;
             overflow-x: hidden;
             line-height: 1.5;
@@ -41,7 +41,7 @@
         .container {
             max-width: 100%;
             margin: 0 auto;
-            padding-bottom: 60px;
+            padding-bottom: 70px;
         }
 
         /* Header Styles */
@@ -49,29 +49,29 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             position: sticky;
             top: 0;
             background-color: var(--bg-primary);
             z-index: 100;
-            padding: 8px 0;
+            padding: 12px 0;
         }
 
         .logo {
-            height: 32px;
+            height: 36px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .logo img {
             height: 100%;
-            border-radius: 8px;
+            border-radius: 10px;
         }
 
         .logo-text {
             font-weight: 700;
-            font-size: 16px;
+            font-size: 18px;
             background: linear-gradient(90deg, #bb86fc, #8a2be2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -79,21 +79,36 @@
 
         /* Profile Section */
         .profile-section {
-            background-color: var(--bg-card);
+            background: linear-gradient(135deg, #1a1a1a, #2a1a3a);
             border-radius: var(--card-radius);
-            padding: 20px;
-            margin-bottom: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
             text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, transparent 70%);
         }
 
         .user-avatar {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             overflow: hidden;
-            margin: 0 auto 12px;
+            margin: 0 auto 16px;
             border: 3px solid var(--accent-color);
+            box-shadow: 0 4px 12px rgba(138, 43, 226, 0.3);
+            position: relative;
+            z-index: 1;
         }
 
         .user-avatar img {
@@ -103,28 +118,35 @@
         }
 
         .user-name {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
             margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
         }
 
         .user-balance {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
             color: var(--accent-color);
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .balance-label {
             font-size: 14px;
             color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
         }
 
         /* Account Actions */
         .account-actions {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
         }
 
         .action-btn {
@@ -134,29 +156,42 @@
             background-color: var(--bg-card);
             border: none;
             border-radius: var(--element-radius);
-            padding: 14px 16px;
+            padding: 16px 18px;
             color: var(--text-primary);
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 500;
             cursor: pointer;
             transition: var(--transition);
             text-align: left;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .action-btn:hover {
             background-color: #222;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+        }
+
+        .action-btn:active {
+            transform: translateY(0);
         }
 
         .action-btn i:first-child {
-            margin-right: 10px;
-            font-size: 18px;
+            margin-right: 12px;
+            font-size: 20px;
             width: 24px;
             text-align: center;
+            color: var(--accent-color);
         }
 
         .action-btn i:last-child {
             color: var(--text-muted);
             font-size: 14px;
+        }
+
+        .action-link {
+            text-decoration: none;
+            color: inherit;
         }
 
         /* Promocode Modal */
@@ -166,7 +201,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.8);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -174,6 +209,7 @@
             opacity: 0;
             visibility: hidden;
             transition: var(--transition);
+            backdrop-filter: blur(5px);
         }
 
         .modal-overlay.active {
@@ -184,27 +220,27 @@
         .promo-modal {
             background-color: var(--bg-card);
             border-radius: var(--card-radius);
-            padding: 20px;
+            padding: 24px;
             width: 85%;
             max-width: 400px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            transform: translateY(20px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            transform: translateY(30px) scale(0.95);
             transition: var(--transition);
         }
 
         .modal-overlay.active .promo-modal {
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         .modal-title {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
         }
 
@@ -212,47 +248,57 @@
             background: none;
             border: none;
             color: var(--text-primary);
-            font-size: 20px;
+            font-size: 22px;
             cursor: pointer;
-            padding: 4px;
+            padding: 5px;
             border-radius: 50%;
             transition: var(--transition);
         }
 
         .close-modal:hover {
             background-color: var(--bg-secondary);
+            transform: rotate(90deg);
         }
 
         .promo-input {
             width: 100%;
             background-color: var(--bg-secondary);
-            border: none;
+            border: 2px solid transparent;
             border-radius: var(--element-radius);
-            padding: 12px 14px;
+            padding: 14px 16px;
             color: var(--text-primary);
-            font-size: 15px;
-            margin-bottom: 16px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: var(--transition);
         }
 
         .promo-input:focus {
-            outline: 2px solid var(--accent-color);
+            outline: none;
+            border-color: var(--accent-color);
+            background-color: #1e1e1e;
         }
 
         .apply-promo {
             width: 100%;
-            background-color: var(--accent-color);
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
             border: none;
             border-radius: var(--element-radius);
-            padding: 12px;
+            padding: 14px;
             color: white;
             font-weight: 600;
-            font-size: 15px;
+            font-size: 16px;
             cursor: pointer;
             transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(138, 43, 226, 0.3);
         }
 
         .apply-promo:hover {
-            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(138, 43, 226, 0.4);
+        }
+
+        .apply-promo:active {
+            transform: translateY(0);
         }
 
         /* Bottom Navigation */
@@ -264,9 +310,10 @@
             background-color: var(--bg-secondary);
             display: flex;
             justify-content: space-around;
-            padding: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
             z-index: 100;
+            backdrop-filter: blur(10px);
         }
 
         .nav-item {
@@ -274,7 +321,7 @@
             flex-direction: column;
             align-items: center;
             color: var(--text-muted);
-            font-size: 11px;
+            font-size: 12px;
             transition: var(--transition);
             text-decoration: none;
         }
@@ -284,8 +331,15 @@
         }
 
         .nav-icon {
-            font-size: 18px;
-            margin-bottom: 2px;
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* Section divider */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            margin: 20px 0;
         }
     </style>
 </head>
@@ -316,20 +370,52 @@
                 <i class="fas fa-chevron-right"></i>
             </button>
             
-            <a href="https://squadbusterslife.github.io/LifeShop/History.html" class="action-btn">
-                <div>
-                    <i class="fas fa-history"></i>
-                    История покупок
+            <a href="https://squadbusterslife.github.io/LifeShop/History.html" class="action-link">
+                <div class="action-btn">
+                    <div>
+                        <i class="fas fa-history"></i>
+                        История покупок
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
                 </div>
-                <i class="fas fa-chevron-right"></i>
             </a>
             
-            <a href="https://t.me/Bahrik228" class="action-btn">
+            <button class="action-btn" id="ref-btn">
                 <div>
-                    <i class="fas fa-headset"></i>
-                    Поддержка
+                    <i class="fas fa-user-friends"></i>
+                    Реферальная система
                 </div>
                 <i class="fas fa-chevron-right"></i>
+            </button>
+            
+            <a href="https://t.me/akchotzivi" target="_blank" class="action-link">
+                <div class="action-btn">
+                    <div>
+                        <i class="fas fa-star"></i>
+                        Отзывы
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </a>
+            
+            <a href="https://telegra.ph/Pered-tem-kak-nachat-ispolzovat-nashi-uslugi-oznakomsya-s-nashimi-pravilami-06-01" target="_blank" class="action-link">
+                <div class="action-btn">
+                    <div>
+                        <i class="fas fa-file-alt"></i>
+                        Пользовательское соглашение
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </a>
+            
+            <a href="https://t.me/Bahrik228" target="_blank" class="action-link">
+                <div class="action-btn">
+                    <div>
+                        <i class="fas fa-headset"></i>
+                        Поддержка
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
             </a>
         </div>
     </div>
@@ -406,6 +492,7 @@
         const closeModal = document.getElementById('close-modal');
         const applyPromo = document.getElementById('apply-promo');
         const promoInput = document.getElementById('promo-input');
+        const refBtn = document.getElementById('ref-btn');
         
         // Open modal
         promoBtn.addEventListener('click', function() {
@@ -444,6 +531,11 @@
             if (e.key === 'Enter') {
                 applyPromo.click();
             }
+        });
+        
+        // Referral system button (non-functional)
+        refBtn.addEventListener('click', function() {
+            alert('Реферальная система скоро будет доступна!');
         });
     </script>
 </body>
