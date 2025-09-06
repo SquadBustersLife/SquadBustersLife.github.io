@@ -180,17 +180,89 @@
             color: var(--text-secondary);
         }
 
+        .price-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
         .product-price {
             font-size: 24px;
             font-weight: 700;
             color: var(--accent-color);
-            margin-bottom: 12px;
+        }
+
+        .original-price {
+            font-size: 18px;
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        .discount-badge {
+            background: linear-gradient(135deg, #ff6b6b, #ff3838);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
         }
 
         .product-description {
             color: var(--text-secondary);
             line-height: 1.6;
             margin-bottom: 16px;
+        }
+
+        /* Button Selection */
+        .button-selection {
+            margin-bottom: 16px;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 380px) {
+            .button-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .option-button {
+            background-color: var(--bg-secondary);
+            border: 2px solid transparent;
+            border-radius: var(--element-radius);
+            padding: 12px;
+            color: var(--text-primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .option-button:hover {
+            background-color: #222;
+        }
+
+        .option-button.selected {
+            border-color: var(--accent-color);
+            background-color: rgba(138, 43, 226, 0.1);
+        }
+
+        .option-name {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .option-price {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent-color);
         }
 
         .buy-btn {
@@ -336,6 +408,26 @@
             color: var(--text-secondary);
             font-size: 14px;
             line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .review-photo {
+            width: 100%;
+            border-radius: var(--element-radius);
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 8px;
+        }
+
+        .review-photo:hover {
+            transform: scale(1.02);
+        }
+
+        .review-photo img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--element-radius);
         }
 
         .no-reviews {
@@ -347,6 +439,50 @@
         .no-reviews i {
             font-size: 32px;
             margin-bottom: 10px;
+        }
+
+        /* Photo Modal */
+        .photo-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .photo-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: var(--element-radius);
+        }
+
+        .close-photo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
         }
 
         /* Bottom Navigation */
@@ -403,7 +539,7 @@
                 <button class="back-btn" id="back-btn">
                     <i class="fas fa-arrow-left"></i>
                 </button>
-                <img id="logo-img" src="https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/refs/heads/main/LifeShop/Life.png" alt="Life Shop">
+                <img id="logo-img" src="https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Life.png" alt="Life Shop">
                 <div class="logo-text">Life Shop</div>
             </div>
         </header>
@@ -427,9 +563,19 @@
                 <div class="rating-stars"></div>
                 <div class="rating-value"></div>
             </div>
-            <div class="product-price" id="product-price">0 ₽</div>
+            
+            <div class="price-container" id="price-container">
+                <div class="product-price" id="product-price">0 ₽</div>
+            </div>
+            
             <p class="product-description" id="product-description">Загрузка описания...</p>
-            <button class="buy-btn" id="buy-btn">Купить сейчас</button>
+            
+            <div class="button-selection" id="button-selection" style="display: none;">
+                <h3 class="section-title">Выберите вариант:</h3>
+                <div class="button-grid" id="button-grid"></div>
+            </div>
+            
+            <button class="buy-btn" id="buy-btn">Купить</button>
         </div>
 
         <div class="related-products">
@@ -451,6 +597,14 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Photo Modal -->
+    <div class="photo-modal" id="photo-modal">
+        <button class="close-photo" id="close-photo">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="modal-content" id="modal-content"></div>
     </div>
 
     <div class="bottom-nav">
@@ -482,74 +636,35 @@
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get('id');
         
+        // Global variables
+        let productData = null;
+        let selectedButtonIndex = 0;
+        let discount = 0;
+        
         // Back button handler
         document.getElementById('back-btn').addEventListener('click', function() {
             window.history.back();
         });
         
-        // Buy button handler
-        document.getElementById('buy-btn').addEventListener('click', function() {
-            alert('Покупка товара будет доступна в ближайшее время!');
+        // Photo modal functionality
+        const photoModal = document.getElementById('photo-modal');
+        const closePhoto = document.getElementById('close-photo');
+        const modalContent = document.getElementById('modal-content');
+        
+        closePhoto.addEventListener('click', function() {
+            photoModal.classList.remove('active');
         });
         
-        // Carousel functionality
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.banner-slide');
-        const dots = document.querySelectorAll('.carousel-dot');
-        
-        function showSlide(index) {
-            slides.forEach(slide => slide.classList.remove('active'));
-            dots.forEach(dot => dot.classList.remove('active'));
-            
-            slides[index].classList.add('active');
-            dots[index].classList.add('active');
-            currentSlide = index;
-        }
-        
-        // Add click events to dots
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => showSlide(index));
-        });
-        
-        // Auto slide change
-        setInterval(() => {
-            showSlide((currentSlide + 1) % slides.length);
-        }, 5000);
-        
-        // Swipe functionality for mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
-        
-        const carousel = document.getElementById('banner-carousel');
-        
-        carousel.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-        
-        carousel.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-        
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            
-            if (touchEndX < touchStartX - swipeThreshold) {
-                // Swipe left - next slide
-                showSlide((currentSlide + 1) % slides.length);
+        photoModal.addEventListener('click', function(e) {
+            if (e.target === photoModal) {
+                photoModal.classList.remove('active');
             }
-            
-            if (touchEndX > touchStartX + swipeThreshold) {
-                // Swipe right - previous slide
-                showSlide((currentSlide - 1 + slides.length) % slides.length);
-            }
-        }
+        });
         
         // Fetch product data
         async function loadProductData() {
             try {
                 if (!productId) {
-                    console.error('Product ID not specified in URL');
                     showError('ID товара не указан');
                     return;
                 }
@@ -561,12 +676,26 @@
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 
-                const productData = await response.json();
+                productData = await response.json();
                 
                 // Set product info
                 document.getElementById('product-name').textContent = productData.Name;
-                document.getElementById('product-price').textContent = `${productData.Price} ₽`;
                 document.getElementById('product-description').textContent = productData.Description;
+                
+                // Check for discount
+                if (productData.Discount) {
+                    discount = parseInt(productData.Discount);
+                }
+                
+                // Handle buttons if they exist
+                if (productData.Buttons && productData.Buttons.length > 0) {
+                    document.getElementById('button-selection').style.display = 'block';
+                    createButtonOptions(productData.Buttons);
+                    updatePrice(0); // Select first button by default
+                } else {
+                    // No buttons, use base price
+                    updateBasePrice();
+                }
                 
                 // Calculate and display rating
                 if (productData.Reviews && productData.Reviews.length > 0) {
@@ -641,6 +770,110 @@
             }
         }
         
+        // Create button options
+        function createButtonOptions(buttons) {
+            const buttonGrid = document.getElementById('button-grid');
+            buttonGrid.innerHTML = '';
+            
+            buttons.forEach((button, index) => {
+                const buttonElement = document.createElement('button');
+                buttonElement.className = 'option-button';
+                buttonElement.dataset.index = index;
+                
+                buttonElement.innerHTML = `
+                    <div class="option-name">${button.N}</div>
+                    <div class="option-price">${calculateDiscountPrice(button.P)} ₽</div>
+                `;
+                
+                buttonElement.addEventListener('click', () => {
+                    selectButton(index);
+                });
+                
+                buttonGrid.appendChild(buttonElement);
+            });
+            
+            // Select first button
+            selectButton(0);
+        }
+        
+        // Select button
+        function selectButton(index) {
+            // Remove selected class from all buttons
+            document.querySelectorAll('.option-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked button
+            document.querySelector(`.option-button[data-index="${index}"]`).classList.add('selected');
+            
+            // Update price
+            selectedButtonIndex = index;
+            updatePrice(index);
+        }
+        
+        // Calculate price with discount
+        function calculateDiscountPrice(price) {
+            if (discount > 0) {
+                return Math.round(price * (1 - discount / 100));
+            }
+            return price;
+        }
+        
+        // Update price display
+        function updatePrice(buttonIndex) {
+            const priceContainer = document.getElementById('price-container');
+            const button = productData.Buttons[buttonIndex];
+            const discountedPrice = calculateDiscountPrice(button.P);
+            
+            if (discount > 0) {
+                priceContainer.innerHTML = `
+                    <div class="product-price">${discountedPrice} ₽</div>
+                    <div class="original-price">${button.P} ₽</div>
+                    <div class="discount-badge">-${discount}%</div>
+                `;
+            } else {
+                priceContainer.innerHTML = `<div class="product-price">${button.P} ₽</div>`;
+            }
+        }
+        
+        // Update base price (when no buttons)
+        function updateBasePrice() {
+            const priceContainer = document.getElementById('price-container');
+            const discountedPrice = calculateDiscountPrice(productData.Price);
+            
+            if (discount > 0) {
+                priceContainer.innerHTML = `
+                    <div class="product-price">${discountedPrice} ₽</div>
+                    <div class="original-price">${productData.Price} ₽</div>
+                    <div class="discount-badge">-${discount}%</div>
+                `;
+            } else {
+                priceContainer.innerHTML = `<div class="product-price">${productData.Price} ₽</div>`;
+            }
+        }
+        
+        // Buy button handler
+        document.getElementById('buy-btn').addEventListener('click', function() {
+            if (!productData) return;
+            
+            let price = productData.Price;
+            let buttonName = "";
+            
+            if (productData.Buttons && productData.Buttons.length > 0) {
+                const selectedButton = productData.Buttons[selectedButtonIndex];
+                price = selectedButton.P;
+                buttonName = selectedButton.N;
+            }
+            
+            const purchaseData = {
+                Button: selectedButtonIndex,
+                ID: productId
+            };
+            
+            const encodedData = encodeURIComponent(JSON.stringify(purchaseData));
+            window.location.href = `https://squadbusterslife.github.io/LifeShop/Purchase.html?data=${encodedData}`;
+        });
+        
         // Show error message
         function showError(message) {
             document.getElementById('product-name').textContent = 'Ошибка загрузки';
@@ -657,7 +890,7 @@
             banner2.classList.remove('skeleton');
         }
         
-        // Display reviews
+        // Display reviews with photos
         function displayReviews(reviews) {
             const reviewsContainer = document.getElementById('reviews-container');
             reviewsContainer.innerHTML = '';
@@ -665,6 +898,15 @@
             reviews.forEach(review => {
                 const reviewCard = document.createElement('div');
                 reviewCard.className = 'review-card';
+                
+                let photoHTML = '';
+                if (review.P) {
+                    photoHTML = `
+                        <div class="review-photo" onclick="openPhotoModal('${review.P}')">
+                            <img src="${review.P}" alt="Фото отзыва">
+                        </div>
+                    `;
+                }
                 
                 reviewCard.innerHTML = `
                     <div class="review-header">
@@ -680,10 +922,17 @@
                         </div>
                     </div>
                     <div class="review-text">${review.T}</div>
+                    ${photoHTML}
                 `;
                 
                 reviewsContainer.appendChild(reviewCard);
             });
+        }
+        
+        // Open photo modal
+        function openPhotoModal(photoUrl) {
+            modalContent.innerHTML = `<img src="${photoUrl}" alt="Фото отзыва">`;
+            photoModal.classList.add('active');
         }
         
         // Load related products
@@ -757,6 +1006,59 @@
                         <p>Не удалось загрузить товары</p>
                     </div>
                 `;
+            }
+        }
+        
+        // Carousel functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.banner-slide');
+        const dots = document.querySelectorAll('.carousel-dot');
+        
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+            currentSlide = index;
+        }
+        
+        // Add click events to dots
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => showSlide(index));
+        });
+        
+        // Auto slide change
+        setInterval(() => {
+            showSlide((currentSlide + 1) % slides.length);
+        }, 5000);
+        
+        // Swipe functionality for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        const carousel = document.getElementById('banner-carousel');
+        
+        carousel.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        carousel.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            
+            if (touchEndX < touchStartX - swipeThreshold) {
+                // Swipe left - next slide
+                showSlide((currentSlide + 1) % slides.length);
+            }
+            
+            if (touchEndX > touchStartX + swipeThreshold) {
+                // Swipe right - previous slide
+                showSlide((currentSlide - 1 + slides.length) % slides.length);
             }
         }
         
