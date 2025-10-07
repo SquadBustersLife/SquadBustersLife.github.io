@@ -2,10 +2,6 @@
   "Discount": "10",
   "Buttons": [
     {
-      "P": "9999",
-      "N": "Supercell Store"
-    },
-    {
       "P": "898",
       "N": "По входу"
     }
